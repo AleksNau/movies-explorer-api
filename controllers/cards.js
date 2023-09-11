@@ -1,6 +1,6 @@
 const { HTTP_STATUS_OK, HTTP_STATUS_CREATED } = require('http2').constants;
 const { CastError, ValidationError } = require('mongoose').Error;
-const cardModel = require('../models/cards');
+const cardModel = require('../models/movie');
 
 const {
   BadRequestError,
