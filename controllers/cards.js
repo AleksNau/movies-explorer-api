@@ -1,6 +1,6 @@
 const { HTTP_STATUS_OK, HTTP_STATUS_CREATED } = require('http2').constants;
 const { CastError, ValidationError } = require('mongoose').Error;
-const cardModel = require('../models/movie');
+const movieModel = require('../models/movie');
 
 const {
   BadRequestError,
@@ -8,14 +8,39 @@ const {
   ForbiddenError,
 } = require('../errors/errors');
 
-const getCards = (req, res, next) => cardModel.find()
-  .then((cards) => res.status(HTTP_STATUS_OK).send(cards))
+const getMovies = (req, res, next) => movieModel.find()
+  .then((movies) => res.status(HTTP_STATUS_OK).send(movies))
   .catch(next);// 400,500
 
-const createCard = (req, res, next) => {
-  const { name, link } = req.body;
+const createMovie = (req, res, next) => {
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+  } = req.body;
   const owner = req.user._id;
-  return cardModel.create({ owner, name, link })
+  return movieModel.create({
+    owner,
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+  })
     .then((card) => {
       res.status(HTTP_STATUS_CREATED).send(card);
     })
@@ -27,9 +52,9 @@ const createCard = (req, res, next) => {
     });
 };// 400,500
 
-const deleteCard = (req, res, next) => {
+const deleteMovie = (req, res, next) => {
   const { cardId } = req.params;
-  return cardModel.findById(cardId)
+  return movieModel.findById(cardId)
     .orFail(() => {
       throw new NotFoundError('Запрашиваемая карточка не найдена');
     })
@@ -37,7 +62,7 @@ const deleteCard = (req, res, next) => {
       if (!card.owner.equals(req.user._id)) {
         throw new ForbiddenError('Вы не можете удалить чужую карточку');
       }
-      return cardModel.deleteOne({ _id: cardId }).then(() => res.send({ message: 'Карточка успешно удалена' }));
+      return movieModel.deleteOne({ _id: cardId }).then(() => res.send({ message: 'Карточка успешно удалена' }));
     })
     .catch((err) => {
       if (err instanceof CastError) {
@@ -48,7 +73,7 @@ const deleteCard = (req, res, next) => {
 };// 404
 
 const getLikes = (req, res, next) => {
-  cardModel
+  movieModel
     .findByIdAndUpdate(
       req.params.cardId,
       { $addToSet: { likes: req.user._id } },
@@ -68,7 +93,7 @@ const getLikes = (req, res, next) => {
 };
 // убрать лайк
 const deleteLikes = (req, res, next) => {
-  cardModel
+  movieModel
     .findByIdAndUpdate(
       req.params.cardId,
       { $pull: { likes: req.user._id } },
@@ -87,9 +112,9 @@ const deleteLikes = (req, res, next) => {
 // 400,404,500
 };
 module.exports = {
-  getCards,
-  createCard,
-  deleteCard,
+  getMovies,
+  createMovie,
+  deleteMovie,
   getLikes,
   deleteLikes,
 };

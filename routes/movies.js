@@ -4,14 +4,14 @@ const {
   validationCardById,
 } = require('../middlewares/validation');
 const {
-  getCards, createCard, deleteCard, getLikes, deleteLikes,
+  getMovies, createMovie, deleteMovie, getLikes, deleteLikes,
 } = require('../controllers/cards');
 // отправка карточек
-router.get('/', getCards);
+router.get('/', getMovies);
 
-router.post('/', validationCreateCard, createCard);
+router.post('/', validationCreateCard, createMovie);
 
-router.delete('/:cardId', validationCardById, deleteCard);
+router.delete('/:cardId', validationCardById, deleteMovie);
 
 router.put('/:cardId/likes', validationCardById, getLikes);
 router.delete('/:cardId/likes', validationCardById, deleteLikes);

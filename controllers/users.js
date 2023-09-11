@@ -3,7 +3,7 @@ const { CastError, ValidationError } = require('mongoose').Error;
 const bcrypt = require('bcrypt');
 const userModel = require('../models/user');
 const { getJwtToken } = require('../utils/jwt');
-// ForbiddenError,
+
 const {
   BadRequestError,
   NotFoundError,
@@ -13,19 +13,17 @@ const {
 
 const createProfile = (req, res, next) => {
   const {
-    name, about, avatar, email, password,
+    name, email, password,
   } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => {
       userModel.create({
-        name, about, avatar, email, password: hash,
+        name, email, password: hash,
       })
         .then((user) => res.status(HTTP_STATUS_CREATED).send({
           _id: user._id,
           email: user.email,
           name: user.name,
-          about: user.about,
-          avatar: user.avatar,
 
         }))
         .catch((err) => {
@@ -96,27 +94,6 @@ const updateProfile = (req, res, next) => {
   // 400,404,500
 };
 
-const changeAvatar = (req, res, next) => {
-  const { avatar } = req.body;
-  userModel
-    .findByIdAndUpdate(
-      req.user._id,
-      { avatar },
-      { new: true, runValidators: true },
-    )
-    .orFail(() => {
-      throw new NotFoundError('Запрашиваемый пользователь не найден');
-    })
-    .then((user) => res.status(HTTP_STATUS_OK).send(user))
-    .catch((err) => {
-      if (err instanceof ValidationError) {
-        return next(new BadRequestError(`Ошибка валидации: ${err.message}`));
-      }
-      return next(err);
-    });
-  // 400,404,500
-};
-
 // текущий пользователь
 const getCurrentUser = (req, res, next) => {
   userModel.findById(req.user._id)
@@ -138,7 +115,6 @@ module.exports = {
   getProfileById,
   getUsersList,
   updateProfile,
-  changeAvatar,
   getCurrentUser,
   login,
 };

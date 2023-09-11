@@ -1,12 +1,11 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const {
-  getProfileById, getUsersList, updateProfile, changeAvatar, getCurrentUser,
+  getProfileById, getUsersList, updateProfile, getCurrentUser,
 } = require('../controllers/users');
 
 const {
   validationUpdateUser,
-  validationUpdateAvatar,
 } = require('../middlewares/validation');
 // создание пользователя
 router.get('/me', getCurrentUser);
@@ -21,7 +20,5 @@ router.get('/:id', celebrate({
 router.get('/', getUsersList);
 
 router.patch('/me', validationUpdateUser, updateProfile);
-
-router.patch('/me/avatar', validationUpdateAvatar, changeAvatar);
 
 module.exports = router;
