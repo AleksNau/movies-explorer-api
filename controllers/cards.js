@@ -25,6 +25,7 @@ const createMovie = (req, res, next) => {
     nameEN,
     thumbnail,
     movieId,
+    trailerLink
   } = req.body;
   const owner = req.user._id;
   return movieModel.create({
@@ -40,6 +41,7 @@ const createMovie = (req, res, next) => {
     nameEN,
     thumbnail,
     movieId,
+    trailerLink
   })
     .then((card) => {
       res.status(HTTP_STATUS_CREATED).send(card);
