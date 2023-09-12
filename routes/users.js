@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {
-   updateProfile, getCurrentUser,
+  updateProfile, getCurrentUser,
 } = require('../controllers/users');
 
 const {

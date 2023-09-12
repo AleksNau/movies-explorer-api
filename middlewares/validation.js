@@ -11,8 +11,6 @@ const validationLogin = celebrate({
 const validationCreateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(validationURL),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
@@ -21,14 +19,22 @@ const validationCreateUser = celebrate({
 const validationUpdateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    about: Joi.string().min(2).max(30).required(),
+    email: Joi.string().required().email(),
   }),
 });
 
-const validationCreateCard = celebrate({
+const validationCreateMovie = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    link: Joi.string().required().regex(validationURL),
+    country: Joi.string().min(2).max(30).required(),
+    director: Joi.string().min(2).max(30).required(),
+    duration: Joi.string().min(2).max(30).required(),
+    year: Joi.string().min(2).max(30).required(),
+    description: Joi.string().min(2).max(30).required(),
+    image: Joi.string().required().regex(validationURL),
+    trailerLink: Joi.string().required().regex(validationURL),
+    thumbnail: Joi.string().required().regex(validationURL),
+    nameRU: Joi.string().min(2).max(30).required(),
+    nameEN: Joi.string().min(2).max(30).required(),
   }),
 });
 
@@ -40,7 +46,7 @@ const validationCardById = celebrate({
 
 module.exports = {
   validationCardById,
-  validationCreateCard,
+  validationCreateMovie,
   validationUpdateUser,
   validationCreateUser,
   validationLogin,

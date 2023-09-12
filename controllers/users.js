@@ -1,5 +1,5 @@
 const { HTTP_STATUS_OK, HTTP_STATUS_CREATED } = require('http2').constants;
-const { CastError, ValidationError } = require('mongoose').Error;
+const { ValidationError } = require('mongoose').Error;
 const bcrypt = require('bcrypt');
 const userModel = require('../models/user');
 const { getJwtToken } = require('../utils/jwt');

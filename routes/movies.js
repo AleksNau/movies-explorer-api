@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {
-  validationCreateCard,
+  validationCreateMovie,
   validationCardById,
 } = require('../middlewares/validation');
 const {
@@ -8,8 +8,8 @@ const {
 } = require('../controllers/movies');
 // отправка карточек
 router.get('/', getMovies);
-//validationCreateCard
-router.post('/', createMovie);
+// validationCreateMovie
+router.post('/',validationCreateMovie, createMovie);
 
 router.delete('/:cardId', validationCardById, deleteMovie);
 
