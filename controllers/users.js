@@ -49,29 +49,6 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-const getProfileById = (req, res, next) => {
-  const { id } = req.params;
-  return userModel.findById(id)
-    .orFail(() => {
-      throw new NotFoundError('Запрашиваемый пользователь не найден');
-    })
-    .then((user) => res.status(HTTP_STATUS_OK).send(user))
-    .catch((err) => {
-      if (err instanceof CastError) {
-        return next(new BadRequestError(`Ошибка Id: ${err.message}`));
-      }
-      return next(err);
-    });
-  // 404,500
-};
-
-const getUsersList = (req, res, next) => userModel.find()
-  .then((users) => {
-    res.status(HTTP_STATUS_OK).send(users);
-  })
-  .catch(next);
-// 400,500
-
 const updateProfile = (req, res, next) => {
   const { name, about, email } = req.body;
   userModel
@@ -112,8 +89,6 @@ const getCurrentUser = (req, res, next) => {
 
 module.exports = {
   createProfile,
-  getProfileById,
-  getUsersList,
   updateProfile,
   getCurrentUser,
   login,

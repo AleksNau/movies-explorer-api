@@ -74,49 +74,8 @@ const deleteMovie = (req, res, next) => {
     });
 };// 404
 
-const getLikes = (req, res, next) => {
-  movieModel
-    .findByIdAndUpdate(
-      req.params.cardId,
-      { $addToSet: { likes: req.user._id } },
-      { new: true },
-    )
-    .orFail(() => {
-      throw new NotFoundError('Запрашиваемая карточка не найдена');
-    })
-    .then((card) => res.status(HTTP_STATUS_OK).send({ data: card }))
-    .catch((err) => {
-      if (err instanceof CastError) {
-        return next(new BadRequestError(`Ошибка Id: ${err.message}`));
-      }
-      return next(err);
-    });
-// 400,404,500
-};
-// убрать лайк
-const deleteLikes = (req, res, next) => {
-  movieModel
-    .findByIdAndUpdate(
-      req.params.cardId,
-      { $pull: { likes: req.user._id } },
-      { new: true },
-    )
-    .orFail(() => {
-      throw new NotFoundError('Запрашиваемая карточка не найдена');
-    })
-    .then((card) => res.status(HTTP_STATUS_OK).send({ data: card }))
-    .catch((err) => {
-      if (err instanceof CastError) {
-        return next(new BadRequestError(`Ошибка Id: ${err.message}`));
-      }
-      return next(err);
-    });
-// 400,404,500
-};
 module.exports = {
   getMovies,
   createMovie,
   deleteMovie,
-  getLikes,
-  deleteLikes,
 };
