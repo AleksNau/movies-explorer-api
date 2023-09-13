@@ -42,12 +42,7 @@ app.use(limiter);
 const router = require('./routes/index');
 
 app.use(express.json());
-// подключили роуты юзера
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
+
 app.post('/signin', validationLogin, login);
 app.post('/signup', validationCreateUser, createProfile);
 
