@@ -8,8 +8,8 @@ const {
 } = require('../controllers/movies');
 // отправка карточек
 router.get('/', getMovies);
-// validationCreateMovie
-router.post('/',validationCreateMovie, createMovie);
+
+router.post('/', validationCreateMovie, createMovie);
 
 router.delete('/:cardId', validationCardById, deleteMovie);
 
