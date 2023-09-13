@@ -1,5 +1,6 @@
-# movies-explorer-api
-
-https://github.com/AleksNau/movies-explorer-api
-https://api.diplom.aleksnau.nomoredomainsicu.ru
-158.160.78.79
+# Movies-explorer-api
+Бэкэнд дипломной работы Яндекс-практикум
+### Ссылки на проект
+- Github https://github.com/AleksNau/movies-explorer-api
+- Backend https://api.diplom.aleksnau.nomoredomainsicu.ru
+- IP 158.160.78.79
