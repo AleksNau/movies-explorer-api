@@ -7,9 +7,7 @@ require('dotenv').config();
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { limiter } = require('./utils/limiter')
-const loggedInCheck = require('./middlewares/auth');
 const handleError = require('./middlewares/handleError');
-const authoriazation = require('./routes/sign')
 const { PORT = 3000, MONGODB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
 
 mongoose.connect(MONGODB_URL, {
@@ -33,9 +31,6 @@ const router = require('./routes/index');
 
 app.use(express.json());
 
-app.use(authoriazation);
-
-app.use(loggedInCheck);
 app.use(router);
 
 app.use(errorLogger);
