@@ -6,8 +6,9 @@ const { errors } = require('celebrate');
 require('dotenv').config();
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { limiter } = require('./utils/limiter')
+const { limiter } = require('./utils/limiter');
 const handleError = require('./middlewares/handleError');
+
 const { PORT = 3000, MONGODB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
 
 mongoose.connect(MONGODB_URL, {

@@ -6,10 +6,10 @@ const {
 
 const userRouter = require('./users');
 const moviesRouter = require('./movies');
-const authoriazation = require("./sign");
+const authoriazation = require('./sign');
 
 router.use(authoriazation);
-router.use(loggedInCheck)
+router.use(loggedInCheck);
 router.use('/users', userRouter);
 router.use('/movies', moviesRouter);
 router.use((req, res, next) => next(new NotFoundError('Такая страница не существует')));

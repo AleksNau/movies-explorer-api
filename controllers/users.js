@@ -5,10 +5,15 @@ const userModel = require('../models/user');
 const { getJwtToken } = require('../utils/jwt');
 
 const {
+  validationErrorText,
+  userNotFoundErrorText,
+  sameEmailErrorText,
+} = require('../utils/constants');
+
+const {
   BadRequestError,
   NotFoundError,
   ConflictError,
-
 } = require('../errors/errors');
 
 const createProfile = (req, res, next) => {
@@ -28,10 +33,10 @@ const createProfile = (req, res, next) => {
         }))
         .catch((err) => {
           if (err.code === 11000) {
-            return next(new ConflictError('Пользователь с таким email уже существует'));
+            return next(new ConflictError(sameEmailErrorText));
           }
           if (err instanceof ValidationError) {
-            return next(new BadRequestError(`Ошибка валидации: ${err.message}`));
+            return next(new BadRequestError(`${validationErrorText} ${err.message}`));
           }
           return next(err);
         });
@@ -58,12 +63,12 @@ const updateProfile = (req, res, next) => {
       { new: true, runValidators: true },
     )
     .orFail(() => {
-      throw new NotFoundError('Запрашиваемый пользователь не найден');
+      throw new NotFoundError(userNotFoundErrorText);
     })
     .then((user) => res.status(HTTP_STATUS_OK).send(user))
     .catch((err) => {
       if (err instanceof ValidationError) {
-        return next(new BadRequestError(`Ошибка валидации: ${err.message}`));
+        return next(new BadRequestError(`${validationErrorText} ${err.message}`));
       }
 
       return next(err);
@@ -76,13 +81,13 @@ const getCurrentUser = (req, res, next) => {
   userModel.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(userNotFoundErrorText);
       }
       res.status(200).send(user);
     })
     .catch((err) => {
       if (err.message === 'NotFound') {
-        return next(new NotFoundError('Пользователь не найден'));
+        return next(new NotFoundError(userNotFoundErrorText));
       } return next(err);
     });
 };
