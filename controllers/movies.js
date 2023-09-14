@@ -8,10 +8,12 @@ const {
   ForbiddenError,
 } = require('../errors/errors');
 
-const getMovies = (req, res, next) => movieModel.find()
+const getMovies = (req, res, next) => {
+  const owner = req.user._id;
+  movieModel.find({owner})
   .then((movies) => res.status(HTTP_STATUS_OK).send(movies))
   .catch(next);// 400,500
-
+}
 const createMovie = (req, res, next) => {
   const {
     country,
