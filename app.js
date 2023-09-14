@@ -2,11 +2,11 @@ const express = require('express');
 const { default: mongoose } = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate');
 require('dotenv').config();
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { limiter } = require('./utils/limiter')
 const loggedInCheck = require('./middlewares/auth');
 const handleError = require('./middlewares/handleError');
 const authoriazation = require('./routes/sign')
@@ -20,11 +20,6 @@ mongoose.connect(MONGODB_URL, {
 
 const app = express();
 app.use(cors());
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
 
 app.use(helmet());
 
